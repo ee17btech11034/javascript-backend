@@ -1,0 +1,44 @@
+# Backend:
+    -- A system which serve file or handle behind the scenes
+    -- 2 major components:
+        -- a. Programming language with its framework or library
+            -- Java --> Spring Boot
+            -- JS --> Node, Bun, Deno, etc
+            -- PHP --> Laravel
+            -- C++ --> CROW framework
+            -- Golang -->
+    
+        -- b. DataBase:
+            -- Mongo
+            -- MySQl
+            -- PostGres
+            -- SQLite 
+            -- graphs, etc
+
+            To interact with DB we use framworks or libraries ORM or ODM, like Prisma, Mongoose, etc.
+                DB is generally in another continent.
+
+
+# Server: -> A software which serves, it can be installed in mobile, laptop, machine, etc.
+
+# JS based Backend:
+    -- we deal with mostly 3 scenarios:-> 1. Data, 2. File, 3. Third Party (API)
+
+    -- JS Runtime: Node, Deno, Bun, etc.
+
+    -- Folder Structure:
+        -- package.json
+        -- .env
+        -- Readme, git, lint, prettier, etc 
+        -- src
+            -- index (DB connect)
+            -- APP (config, cookies, urlcode, etc)
+            -- Constants (enums, DB-name)
+
+        -- DB (code which connects with DB)
+        -- Models (Structure/Schema to store Data)
+        -- Controllers (Functionality is written here, methiods, functions)
+        -- Routes (different routes)
+        -- Middlewares ()
+        -- Utils (utilities, like sending email, sending fie)
+        -- More (depends)
