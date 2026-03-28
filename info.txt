@@ -3,55 +3,74 @@
 
 ## Revision:
     -- Basic information about Backend with JS 
+    -- Deploy Methods (Module/common js way was wrong in previous for import )
 
 
 
 ## Current commit details:
     
 
-    -- Install Node: Used for runtime JS 
-    -- Express: Used to stablish connection between user and server. it handles req and res 
-
-
-    --  Create Empty node Application:
-        -- `npm init`
-            -- initialize using node package manager. simile "create react app'
-            -- it needs some permissions or provide some options.
-            -- to skip all and provide yes to all          `npm init -y`
-            -- create    "package.json" file
-
-    -- Create a index.js file
-        -- we run this using   `node index.js`
-        -- we can create a command for this, like dev, start build command in     package.json > scripts    `"start": "node index.js"`
-            -- now we can use        ` npm run start` 
-
-    -- setup 'express'
-        -- install `npm install express
-        -- Create a express app in index.js file : https://expressjs.com/ 
+    -- Backend and Frontend:
+        -- backend:
+            -- create a folder and then `npm init`
+            -- Here in package.json file        `"type": "commonjs",`
+                -- This means we will be using common JS.
+                    -- const express = require("express")    // this is common js and it run sequentially. 
+            -- if we want to make it module js then 
+                -- change    `"type": "module",`   in package.json file    --> if we do not add this then will be in Async and throw error as below code runs before import
+                -- Now we can use   `import express from "express"` 
+                -- It will assemble as module.
+            -- `npm i dotenv express`
+            -- Use json formatter for API responses
         
-        -- we will have to restart app to "HOT Reload (auto compiled and served, restart)" 
-            -- whenever there is any change then we will have to manually restart this. 
-            -- For "Hot reloading" use Nodemon
-        
-    -- When we go in production then we are not sure which port we will get. 
-        -- install       `npm i dotenv`
-        -- create .env file
+        -- frontend:   (npm run dev) to restart
+            -- Can deploy on Vercel, Netlify.
+            -- We can create react app using "create-react-app", "vite", "parcel", etc.
+                -- these are just Bundelers (also called Toolchains) as they convert these files into simple HTMl, CSS, JS.
+
+            -- `npm create vite@latest .`    -> dot tells that create all files in this folder 
+
+            -- We can use "fetch", "axios", "reactQuery", etc to get the api data.
+                -- We prefer "axios" because it provides additional facilities,like we can dump the more datat like header, api keys in req.
+                    -- axios library is specially written for WEB Requests.
+                -- install     `npm i axios`         https://www.npmjs.com/package/axios 
+
+            -- We get           CORS policy    when we start this app not.
+                -- CORS:  (Cross Origin)
+                    -- No access to any different req if that's origin is not same as server.
+                    -- If URl, port number or anything is diffrent n frontend and backend then it is CORS req for it.
+                    -- prevent access to api/ req from unknown.
+
+                    -- Solutions:
+                        -- Either we can whitelist URls (which we defined in frontend)  in backend. let backend respond to these urls.
+                            -- ip whitelist, domain whitlist, etc can be done
+                        -- In backend, we install    `npm i cors`  then add whitelist. 
+                            -- Now think of port in localhost and production as we won't know the port number in production.
+                        
+                        
+                        -- We follow a standerd with giving proper path to api in backend   
+                            -- '/api/v1/jokes'    --> this way we can whitelist all req on api.  
+                        
+                        -- proxy:
+                            -- We put domain path in a place and then append the path in it and use that as an api. 
+                            -- https://vite.dev/config/server-options#server-proxy 
+                            --add Server  in vite.config.js file
+                                -- means whenever there is a request on '/api' then append that proxy in start of that req.
+                                -- make server feel that it is from the same host as server.
+                                    -- it change the origin of req to this proxy means same as server.
+                    -- now CORS errors are gone.
+
+## we can rename the cmd and change the color in VS code
 
 
-    -- Where can we deploy:
-        -- We can deploy on AWS, Azure, DigitalOcean, etc.
-        -- Digital Ocean, Heroku, railway, seenode, render, cyclic.sh, etc for minimum amount like 3-5 $/month
-        -- Upload on git. (We can access public and private both)
 
-        -- Digital ocean:
-            -- Create > App (can be done in droplet but not recommended)
-            -- select repo > branch: main  > src dir: /
-            -- Edit plan > Basic 
-            -- Environment: 
-                -- App is a big container and can have multiple mini apps.
-                -- Global > PORT: 3000 but it will be provided to service app is not necessary
-                -- Local > PORT:3000 (override to give this 3000 port)
-                    -- if this port is not available then it will override this as well with available port 
-            
-            -- click on app url after complition:
-                -- we can change this with "custom domain' 
+
+## Frontend and Backend on same server: (Very bad practice)
+    -- Frontend: 
+        -- We can run        `npm run build`     . creates a dist folder which have static, html, css, js files 
+    -- Can paste the dist folder from frontend in backend and pusg backend on server.
+
+    -- we will have to use middlewares 
+        --          `app.use(express.static('dist'))`   in server.js
+
+    -- But now if we make any change in frontend then we will have to create dist and again dump in there.
