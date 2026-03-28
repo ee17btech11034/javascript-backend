@@ -1,44 +1,57 @@
-# Backend:
-    -- A system which serve file or handle behind the scenes
-    -- 2 major components:
-        -- a. Programming language with its framework or library
-            -- Java --> Spring Boot
-            -- JS --> Node, Bun, Deno, etc
-            -- PHP --> Laravel
-            -- C++ --> CROW framework
-            -- Golang -->
+# Backend using JS:
+
+
+## Revision:
+    -- Basic information about Backend with JS 
+
+
+
+## Current commit details:
     
-        -- b. DataBase:
-            -- Mongo
-            -- MySQl
-            -- PostGres
-            -- SQLite 
-            -- graphs, etc
 
-            To interact with DB we use framworks or libraries ORM or ODM, like Prisma, Mongoose, etc.
-                DB is generally in another continent.
+    -- Install Node: Used for runtime JS 
+    -- Express: Used to stablish connection between user and server. it handles req and res 
 
 
-# Server: -> A software which serves, it can be installed in mobile, laptop, machine, etc.
+    --  Create Empty node Application:
+        -- `npm init`
+            -- initialize using node package manager. simile "create react app'
+            -- it needs some permissions or provide some options.
+            -- to skip all and provide yes to all          `npm init -y`
+            -- create    "package.json" file
 
-# JS based Backend:
-    -- we deal with mostly 3 scenarios:-> 1. Data, 2. File, 3. Third Party (API)
+    -- Create a index.js file
+        -- we run this using   `node index.js`
+        -- we can create a command for this, like dev, start build command in     package.json > scripts    `"start": "node index.js"`
+            -- now we can use        ` npm run start` 
 
-    -- JS Runtime: Node, Deno, Bun, etc.
+    -- setup 'express'
+        -- install `npm install express
+        -- Create a express app in index.js file : https://expressjs.com/ 
+        
+        -- we will have to restart app to "HOT Reload (auto compiled and served, restart)" 
+            -- whenever there is any change then we will have to manually restart this. 
+            -- For "Hot reloading" use Nodemon
+        
+    -- When we go in production then we are not sure which port we will get. 
+        -- install       `npm i dotenv`
+        -- create .env file
 
-    -- Folder Structure:
-        -- package.json
-        -- .env
-        -- Readme, git, lint, prettier, etc 
-        -- src
-            -- index (DB connect)
-            -- APP (config, cookies, urlcode, etc)
-            -- Constants (enums, DB-name)
 
-        -- DB (code which connects with DB)
-        -- Models (Structure/Schema to store Data)
-        -- Controllers (Functionality is written here, methiods, functions)
-        -- Routes (different routes)
-        -- Middlewares ()
-        -- Utils (utilities, like sending email, sending fie)
-        -- More (depends)
+    -- Where can we deploy:
+        -- We can deploy on AWS, Azure, DigitalOcean, etc.
+        -- Digital Ocean, Heroku, railway, seenode, render, cyclic.sh, etc for minimum amount like 3-5 $/month
+        -- Upload on git. (We can access public and private both)
+
+        -- Digital ocean:
+            -- Create > App (can be done in droplet but not recommended)
+            -- select repo > branch: main  > src dir: /
+            -- Edit plan > Basic 
+            -- Environment: 
+                -- App is a big container and can have multiple mini apps.
+                -- Global > PORT: 3000 but it will be provided to service app is not necessary
+                -- Local > PORT:3000 (override to give this 3000 port)
+                    -- if this port is not available then it will override this as well with available port 
+            
+            -- click on app url after complition:
+                -- we can change this with "custom domain' 
