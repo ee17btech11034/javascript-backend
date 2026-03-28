@@ -10,67 +10,38 @@
 ## Current commit details:
     
 
-    -- Backend and Frontend:
-        -- backend:
-            -- create a folder and then `npm init`
-            -- Here in package.json file        `"type": "commonjs",`
-                -- This means we will be using common JS.
-                    -- const express = require("express")    // this is common js and it run sequentially. 
-            -- if we want to make it module js then 
-                -- change    `"type": "module",`   in package.json file    --> if we do not add this then will be in Async and throw error as below code runs before import
-                -- Now we can use   `import express from "express"` 
-                -- It will assemble as module.
-            -- `npm i dotenv express`
-            -- Use json formatter for API responses
+    -- Data Modeling:
+            -- Data store:
+                -- first question must be: what we are going to store. Based on this we decide DB.
+                --   Moon Modeler               is data modeling tool 
+                            -> defines the structure of data.
+                            -> create diagram and it will generate the code
+                            -> Alternative is       Eraser.io      
+                -- mongoose, Prisma helps us in Data modeling
+    
+    -- We can use code Sandbox, code space by github, stackblitz, replit etc. for online code in machines.
+
+
+    -- Lets create some models for Data.                             `npm i mongoose`
+        -- First we will create Models/todos
+            --      use   user.model.js   than       user.js file
+            --      user  user.controller.js     than     user.js 
+
+        -- 3 steps to use mongoose:
+            -- 1. import mongoose
+            -- 2. Create a Schema
+            -- 3. Create a model and export it
         
-        -- frontend:   (npm run dev) to restart
-            -- Can deploy on Vercel, Netlify.
-            -- We can create react app using "create-react-app", "vite", "parcel", etc.
-                -- these are just Bundelers (also called Toolchains) as they convert these files into simple HTMl, CSS, JS.
+        -- Define data fields in Schemas.
 
-            -- `npm create vite@latest .`    -> dot tells that create all files in this folder 
-
-            -- We can use "fetch", "axios", "reactQuery", etc to get the api data.
-                -- We prefer "axios" because it provides additional facilities,like we can dump the more datat like header, api keys in req.
-                    -- axios library is specially written for WEB Requests.
-                -- install     `npm i axios`         https://www.npmjs.com/package/axios 
-
-            -- We get           CORS policy    when we start this app not.
-                -- CORS:  (Cross Origin)
-                    -- No access to any different req if that's origin is not same as server.
-                    -- If URl, port number or anything is diffrent n frontend and backend then it is CORS req for it.
-                    -- prevent access to api/ req from unknown.
-
-                    -- Solutions:
-                        -- Either we can whitelist URls (which we defined in frontend)  in backend. let backend respond to these urls.
-                            -- ip whitelist, domain whitlist, etc can be done
-                        -- In backend, we install    `npm i cors`  then add whitelist. 
-                            -- Now think of port in localhost and production as we won't know the port number in production.
-                        
-                        
-                        -- We follow a standerd with giving proper path to api in backend   
-                            -- '/api/v1/jokes'    --> this way we can whitelist all req on api.  
-                        
-                        -- proxy:
-                            -- We put domain path in a place and then append the path in it and use that as an api. 
-                            -- https://vite.dev/config/server-options#server-proxy 
-                            --add Server  in vite.config.js file
-                                -- means whenever there is a request on '/api' then append that proxy in start of that req.
-                                -- make server feel that it is from the same host as server.
-                                    -- it change the origin of req to this proxy means same as server.
-                    -- now CORS errors are gone.
-
-## we can rename the cmd and change the color in VS code
-
-
-
-
-## Frontend and Backend on same server: (Very bad practice)
-    -- Frontend: 
-        -- We can run        `npm run build`     . creates a dist folder which have static, html, css, js files 
-    -- Can paste the dist folder from frontend in backend and pusg backend on server.
-
-    -- we will have to use middlewares 
-        --          `app.use(express.static('dist'))`   in server.js
-
-    -- But now if we make any change in frontend then we will have to create dist and again dump in there.
+    # we are trying to create a Todo app
+        -- user, todo, subtodos will be there. 
+        -- Main todo will have a name and subtodo. "Gym', "playlist" as main todos and songs as subtoos
+        -- We will give reference to other models as well. 
+            -- like todo is created by which user. What will be the relation between todos and subtodos.
+        
+        -- when setting relation then 2 things to keep in mind:
+            -- 1. type: mongoose.Schema.Types.ObjectId    // tells that this is special type
+                    -- mongoose me Schemas jo banaye hai unke Types me ObjectId hai
+            -- 2. ref: "User"     // DB name which was given in model
+                    -- us Id ka ref ditya hai. This is my way of explaining
