@@ -11,37 +11,25 @@
     
 
     -- Data Modeling:
-            -- Data store:
-                -- first question must be: what we are going to store. Based on this we decide DB.
-                --   Moon Modeler               is data modeling tool 
-                            -> defines the structure of data.
-                            -> create diagram and it will generate the code
-                            -> Alternative is       Eraser.io      
-                -- mongoose, Prisma helps us in Data modeling
-    
-    -- We can use code Sandbox, code space by github, stackblitz, replit etc. for online code in machines.
+            -- 1. Ecommerce:
+                -- First we should create fileds or models which are independent
+                    -- User model create kro
+                -- Than jo ek par dependent hai and then 2 par, 3 par dependent hai, so on...
+                    -- Category model kro    --> Mongoose     categories   hi banata hai plural me
+                        -- Agar ham  "categories" banate hai hai model me to wo kuch nhi krta isi name se DB  collection banata hai.  Inteligent hai check krta hai ki plural hai ki nhi.
+                        -- Model me given name ko hi model name bhi bolna chahiye STandard approcah hai.
 
-
-    -- Lets create some models for Data.                             `npm i mongoose`
-        -- First we will create Models/todos
-            --      use   user.model.js   than       user.js file
-            --      user  user.controller.js     than     user.js 
-
-        -- 3 steps to use mongoose:
-            -- 1. import mongoose
-            -- 2. Create a Schema
-            -- 3. Create a model and export it
-        
-        -- Define data fields in Schemas.
-
-    # we are trying to create a Todo app
-        -- user, todo, subtodos will be there. 
-        -- Main todo will have a name and subtodo. "Gym', "playlist" as main todos and songs as subtoos
-        -- We will give reference to other models as well. 
-            -- like todo is created by which user. What will be the relation between todos and subtodos.
-        
-        -- when setting relation then 2 things to keep in mind:
-            -- 1. type: mongoose.Schema.Types.ObjectId    // tells that this is special type
-                    -- mongoose me Schemas jo banaye hai unke Types me ObjectId hai
-            -- 2. ref: "User"     // DB name which was given in model
-                    -- us Id ka ref ditya hai. This is my way of explaining
+                        -- // Avoid recompiling the model if already exists (important in hot-reload environments)
+                            export const Category = mongoose.models.Category || mongoose.model('Category', categorySchema);
+                                -- If this file is imported multiple times (e.g., in API routes, during development with hot reload), Mongoose will try to register the same model again, leading to:
+                                    -- OverwriteModelError: Cannot overwrite 'Category' model once compiled. 
+                                        This is a common error in full-stack frameworks like Next.js. 
+                    
+                    -- product
+                        -- we can store images in mongoDB in Buffer format but not recommended as it make DB heavy.
+                        -- We can upload images in a folder in backend and then use image path.
+                        -- Use third party to store the images/videos and then provide the url:
+                            -- Cloudnary, S3 bucket
+                    
+                    -- order
+                        -- 
