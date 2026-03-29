@@ -83,3 +83,33 @@
             -- DB can have issues so wrap inside try-catch.
             -- DB is in another continent so use async-await.
 
+
+    -- app.js:
+            -- create app and listen.
+            -- request:
+                -- req.params ==> it contains data we get from url.
+                -- req.body ==> it contains data we get from forms, etc.
+
+            -- middlewares:
+                -- `npm i cookie-parser`
+                -- `npm i cors`   => Cross Origin Resource Sharing
+
+            -- there are 4 params: 
+                -- (error, req, res, next)
+                    -- next for middlewares
+    
+    -- utility:
+            -- Here whenever we are tring to talk to DB (in UserController, other controllers)
+                -- we will be using a piece of code, create a file in utils for that
+                -- Read about Higher Order Function.
+    -- Error api class:
+            -- it tells me to standerdize my error logs 
+            -- check in utils
+
+            -- We created this class bcz Node handles req, it provide this.
+
+    -- But we send res using express not Node. 
+        -- Express does not provide anything direct but we can use cookies.
+
+    -- Status Code:
+        --
