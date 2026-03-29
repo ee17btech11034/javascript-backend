@@ -47,3 +47,39 @@
         -- `npm i -D prettier`
         -- create a file   `.prettierrc`
         -- `.prettierignore` file
+
+    -- MongoDB Atlas:
+        -- Sub service of mongoDB to provide online Database
+        -- steps:
+            -- Sign in > org name (Raja's ord)
+            -- 1. if new:
+                    New Project >  proj name > create 
+                    create deployment > aws provider > Mumbai region > cluster name can be anything > create
+                    Security Quickstart > Username & pass (no special characters)  >  "my local environment" > IP (0.0.0.0/0) > add entry > finish 
+            -- 2. Edit existing project:
+                    Go to security >    
+                        > Network Access > Delete ip and add ip (ip of machine which has Backend code) > 0.0.0.0/0 means access to all machines just for testing
+                        > Db access > Add new user > uname & pass > builtin role (read and write in any)
+            -- Go to Deployment > Database
+                    -- click on  'connect' (beside cluster name) > can choose any here we will use "compass" 
+                        > copy the connection string > password must be replaced when paste in env file
+                    
+
+    -- Go to .env file 
+            -- paste that connection string in here 
+            -- it should not have "/" in the end of string.
+    
+    -- constants.js file:
+            -- define and export variables which are not system specific but important
+    
+    -- DB connection:
+            -- Either we can write all code in index.js or create inside DB folder. 
+                    -- use IFEE   `;(async()=>{})()`
+            -- Better approach is to write seperatelly.
+        
+    -- ` npm i mongoose dotenv express`
+
+    -- DB:
+            -- DB can have issues so wrap inside try-catch.
+            -- DB is in another continent so use async-await.
+
