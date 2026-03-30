@@ -113,3 +113,42 @@
 
     -- Status Code:
         --
+
+    -- Mongo DB Models:
+        -- it stores data in BSON format not JSON.
+        -- user model:
+            -- Created User Model then Video Model 
+            -- watch History is important. We can use basic insert and pop methods. 
+                -- But better to use  a package:    " mongoose-aggregate-paginate-v2"
+                    -- `npm i mongoose-aggregate-paginate-v2`
+                    -- it allows us to write aggregation queries. it is just a plugin
+                    -- Use this instead of "insertmany", "updateMany", etc.
+
+        -- bcrypt vs bcryptjs:
+            -- bcrypts is aNodeJs library package. 
+            -- bcryptjs is optimized in JS with Zero dep and compaible with bcrypt.
+            -- we can use any but here we will be using `bcrype`
+                -- `npm i bcrypt`
+                -- helps us to encrypt password.
+        
+        -- Tokens:
+            -- provide tokens like JWT, etc.
+                -- `npm i jasonwebtoken`
+                -- JWT is bearer token means whoever has this is correct person.
+                -- We need "Access token secret" to generate JWT. 
+                    -- algos to generate these secrets are "Shard256, or andon string generate.
+        
+        -- We directly can not use jwt or entryption in model. 
+            -- we need to use Hooks/middlewares, like pre (do reight before storng the data)
+
+        -- We need methods which compare users password.
+
+        -- Tokens in env:
+                ACCESS_TOKEN_SECRET=nasiwnkwjcnwkjcwjdnwd
+                ACCESS_TOKEN_EXPIRY=1d // have less timelimit
+                REFRESH_TOKEN_SECRET=cwsjdbcjnc
+                REFRESH_TOKEN_EXPIRY=10d // have more time limit than ACCESS_TOKEN_EXPIRY 
+
+                -- Here we will be using both "Sessions" and "Cookies"
+                -- Access token is not stored in DB but we store Refresh token in DB.
+                
