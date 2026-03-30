@@ -152,3 +152,17 @@
                 -- Here we will be using both "Sessions" and "Cookies"
                 -- Access token is not stored in DB but we store Refresh token in DB.
                 
+        -- file upload:
+                --  We generally do not upload file on our server, we use third party.
+                -- We create a file upload function in utility and then we can reuse it for video, picture, pdf, etc upload.
+                -- We generally set this in middleware.
+                -- Cloudinary
+                -- we need packages  `express-fileupload" or "multer"
+                    -- Noadays people use Multer.
+                
+                ## Multer:
+                    -- `npm i cloudinary multer`
+
+                ## Cludinary: 
+                    -- We will make user to upload file using Multer and then we will store it on cloudinary.
+                    
