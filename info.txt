@@ -165,4 +165,70 @@
 
                 ## Cludinary: 
                     -- We will make user to upload file using Multer and then we will store it on cloudinary.
-                    
+
+    ## HTTP:
+        -- Hyper Text Transfer Protocol. https (secure)
+        -- There are multiple protocols, one of them is http.
+        -- That's why we ask for full "URI"
+
+        -- Header:
+            -- matadata (dtata about data)
+                -- key-value sent along with request and response
+                -- write custom headers.
+            -- Uses: Caching, Authentication, state management (is user a guest/loggedin), etc
+            -- x- as prefers is deprecated in ~2012
+
+            -- Category/Types:
+                -- request Headers:==> sent by Client
+                -- response Headers:==> sent by server 
+                -- Representation Header:==> encoding/compression -> check if data is encoded/compressed, if so then decode and then present
+                -- Payload Headers:==> data (like id, email etc)
+                -- there are many like security. 
+
+            -- type of Metadata: (Most common headers)
+                -- Accept: application/json , there are other formats as well 
+                -- user-Agent  --> from which client this req came from, like postman, browser, requestly, etc.
+                -- Authorization:   --> authorization tokens
+                -- content-type  --> imgs/pdf, etc 
+                -- cookies   --> obj of key-value 
+                -- cache-control --> when to delete the datat from cache
+
+            -- CORS Headers:
+                -- Access-Control-Allow-Origin 
+                -- Access-Control-Allow-Credentials
+                -- Access-Control-Allow-Method 
+
+            -- Security Headers:
+                -- Cross - origin-Embedders-policy
+                -- cross-origin-opens-policy
+                -- content-security-policy
+                -- X-XSS-Protection
+
+
+        HTTP Methods:
+            -- Basic set of operations that can be used to interact with server.
+
+            GET:      retrieve a resource 
+            HEAD:     No message Body (response headers only)
+            OPTIONS:  what operations are available
+            TRACE:    loopback test (get same data) -> proxies ko track ke liye
+            DELETE:   remove a resource 
+            PUT:      replace a resource 
+            POST:     interact with resource (mostly add)
+            PATCH:    change part of resource.
+
+        Status Code:
+            -- 1xx    ==> Informational (sent info)
+            -- 2xx    ==> Success
+            -- 3xx    ==> Redirection
+            -- 4xx    ==> Client error
+            -- 5xx    ==> Server error 
+
+            Common: 
+                100 --> continue            102  --> Processing
+                200 --> ok                  201 --> created 
+                202 --> accepted            307 --> temporary redirect 
+                400 --> Bad request         308 --> permanent redirect  
+                401 --> unauthorized        402 --> Payment required 
+                404 --> Not found           500 --> Internal Server Error 
+                504 --> Gateway timeout
