@@ -28,4 +28,15 @@ app.use(express.static("public"))
 //cookies set
 app.use(cookieParser())
 
+
+
+// routes import 
+import userRouter from './routes/user.routes.js';
+
+
+// routes declaration
+// app.get was working because everuthing was in a single file. 
+// but now we will have to use middleware 
+// app.use("/users", userRouter) //testing purpose
+app.use("/api/v1/users", userRouter)
 export {app}

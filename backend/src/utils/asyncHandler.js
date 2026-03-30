@@ -1,4 +1,4 @@
-// const dbConnectionHandler = () => {}
+// const asyncHandler = () => {}
 
 // There are 2 ways to create:
     // 1. try-Catch
@@ -8,9 +8,9 @@
     Higher Order function:
         -- functions which take another function as argument or can return another function.
 
-        const dbConnectionHandler = (fn) => () => {}
+        const asyncHandler = (fn) => () => {}
             OR
-        const dbConnectionHandler = (fn) => {() => {}}
+        const asyncHandler = (fn) => {() => {}}
 
     Both are same we just removed  middle {}
 
@@ -19,7 +19,7 @@
 
 /*
 // try- catch
-const dbConnectionHandler = (fn) => async (req, res, next) => {
+const asyncHandler = (fn) => async (req, res, next) => {
     try {
         await fn(req, res, next)
     } catch (err) {
@@ -34,10 +34,13 @@ const dbConnectionHandler = (fn) => async (req, res, next) => {
 
 // We use promise
 
-const dbConnectionHandler = (fn) =>{
-    (req, res, next)=>{
+// here we will be usiong async handler many times in different functionality. 
+const asyncHandler = (fn) =>{
+    return (req, res, next)=>{
         Promise.resolve(fn(req, res, next)).catch((err)=>{
             next(err)
         })
     }
 }
+
+export {asyncHandler}
