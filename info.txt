@@ -232,3 +232,16 @@
                 401 --> unauthorized        402 --> Payment required 
                 404 --> Not found           500 --> Internal Server Error 
                 504 --> Gateway timeout
+
+
+
+    -- Now we want to register user:
+        --  get user details from frontend --> here we will use Postman
+        --  validation -> not empty
+        --  check if user already exist?
+        --  check for images and avatar
+        --  upload them to cloudinary
+        --  create user object bcz in mongodb we upload objects -> create entry call and return the complete object (encrypted password as well)
+        --  remove password and refresh token feed from return
+        -- check for user creation
+        -- return response else error.
