@@ -256,3 +256,14 @@
 
         -- Collection setup: 
             -- 25.18 @ https://www.youtube.com/watch?v=_u-WgSN5ymU&list=PLu71SKxNbfoBGh_8p_NS-ZAh6v7HhYqHW&index=15 
+
+    -- Access Token and Refresh Token:
+        -- Access tokens are short lived than Refresh token.
+        -- We use Access Token for Authentication (loggedin/admin).
+        -- We validate user using Access Token to log in. 
+            -- we provide refresh token to user. 
+            -- when user give us refresh token 
+            -- then we provide access token to user, now he can log in.
+
+
+    -- if we are not using res in function then we can say              `func(req, _, next)`

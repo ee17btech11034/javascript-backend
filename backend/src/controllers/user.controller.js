@@ -80,4 +80,113 @@ const registerUser = asyncHandler ( async (requestAnimationFrame, res)=>{
     return res.status(201).json(new ApiResponse(201,  createdUser, "User registered successfully."))
 })
 
-export default registerUser
+
+
+// log in user 
+const loginUser = asyncHandler(async(req, res)=>{
+    // re.body -> data 
+    // username or email
+    // find the user 
+    // password check 
+    // access and refresh token 
+    // send these tokens as cookies.
+
+
+    const {emai, username, password} = req.body
+
+    if ((! username) || (! email)){
+        throw new ApiError(400, "uname or email is required")
+    }
+
+    const user = await userModel.findOne({
+        $or: [{username}, {email}]
+    })
+
+    if (! user){
+        throw new ApiError(404, "User does not exist")
+    }
+
+    const isPasswordValid = await user.isPasswordCorrect(password)
+
+    if (!isPasswordValid){
+        throw new ApiError(401, "invalid user creds")
+    }
+
+
+    // generate access and refresh token
+    // better to create a new function or write both in here. 
+    let accessToken;
+    let refreshToken;
+    try {
+        accessToken = user.generateAccessToken()
+        refreshToken = user.generateRefreshToken()
+
+        user.refreshToken = refreshToken
+        // user.save() // we have save method from mongoose but when we do ths it checks all the required parameters. 
+        // we use
+        await user.save({validateBeforeSave: false}) // do not validate before save 
+
+
+    } catch (error) {
+        throw new ApiError(500, "Error while gen both tokens")
+    }
+
+
+    // cookies 
+    const options = {
+        httpOnly: true,
+        secure: true // ensure that only server modify these
+    }
+
+    return res
+        .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json(
+            new ApiResponse(
+                200, 
+                {
+                    user: user, //loggedInUser
+                    accessToken,
+                    refreshToken
+                }, // why sending when done same in cookies. Cookies are only for browsers not for mobile devices.
+                "User logged in successfully"
+            )
+        )
+
+})
+
+
+const logoutUser = asyncHandler(async(req, res)=>{
+    // remove access and refresh tokens from cookies
+    // set refresh token for that user to null or ""
+
+    // But Q is how will we get user datat or id??????
+
+    // we will use middleware
+
+    await userModel.findByIdAndUpdate(
+        req.user._id,
+        {
+            $set: {
+                refreshToken: undefined
+            }
+        },
+        {
+            new: true
+        }
+    )
+
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res
+        .status(200)
+        .clearCookie("accessToken", options)
+        .clearCookie("refreshToken", options)
+        .json(new ApiResponse(200, {}, "User logged out"))
+})
+
+export  {registerUser, loginUser, logoutUser}
