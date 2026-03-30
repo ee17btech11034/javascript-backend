@@ -245,3 +245,14 @@
         --  remove password and refresh token feed from return
         -- check for user creation
         -- return response else error.
+
+    -- postman:
+        -- normal use is when we use postman with methods and params, body as json etc. 
+
+        -- professional way is "postman Collections"
+            -- simple row > json does not have a way to send files. 
+            -- body > forms-data (not urlencoded)
+                    -- keyfiled me Text (create a new key then come back to this and check ) > file select 
+
+        -- Collection setup: 
+            -- 25.18 @ https://www.youtube.com/watch?v=_u-WgSN5ymU&list=PLu71SKxNbfoBGh_8p_NS-ZAh6v7HhYqHW&index=15 

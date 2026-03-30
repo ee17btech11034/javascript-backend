@@ -4,7 +4,7 @@ import { app } from './app.js';
 
 
 dotenv.config({ // we need more setting at 34.15 in "How to connect DB in MERN"
-    path: './env'
+    path: './.env'
 })
 
 connectDB()

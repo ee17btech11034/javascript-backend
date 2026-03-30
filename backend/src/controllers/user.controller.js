@@ -29,7 +29,7 @@ const registerUser = asyncHandler ( async (requestAnimationFrame, res)=>{
 
 
     // userModel.findOne({email}) // checking one by one
-    const existedUser = userModel.findOne({
+    const existedUser = await userModel.findOne({
         $or: [{ username }, { email }]
     })
 
@@ -40,13 +40,17 @@ const registerUser = asyncHandler ( async (requestAnimationFrame, res)=>{
 
 
     const avatarLocalpath = req.files?.avatar[0]?.path
-    const coverImageLocalpath = req.files?.coverImage[0]?.path
+    // const coverImageLocalpath = req.files?.coverImage[0]?.path // we get issues if user does not provide this cover image bcz we did not check this in if.
 
 
     if (! avatarLocalpath){
         throw new ApiError(400, "Avatar file is required!")
     }
 
+    let coverImageLocalpath;
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+        coverImageLocalpath = req.files.coverImage[0].path
+    }
 
     const avatarURI = await uploadOnCloudinary(avatarLocalpath)
     const coverImageURI = await uploadOnCloudinary(coverImageLocalpath)
