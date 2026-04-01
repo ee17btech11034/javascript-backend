@@ -3,6 +3,9 @@ import { ApiError } from "../utils/ApiError.js";
 import { userModel } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
+import jwt from 'jsonwebtoken' 
+
 
 const registerUser = asyncHandler ( async (requestAnimationFrame, res)=>{
     // get user details from frontend --> here we will use Postman
@@ -189,4 +192,50 @@ const logoutUser = asyncHandler(async(req, res)=>{
         .json(new ApiResponse(200, {}, "User logged out"))
 })
 
-export  {registerUser, loginUser, logoutUser}
+
+const refreshAccessToken = asyncHandler(async(req, res)=>{
+        // get refresh token from cookies
+        const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken // or req.headers.refreshToken
+
+        if (!incomingRefreshToken){
+            throw new ApiError(401, "Unauthorized request")
+        }
+
+        const decodedToken = jwt.verify( // if we decoded means we have id of user
+            incomingRefreshToken,
+            process.env.REFRESH_TOKEN_SECRET
+        )
+
+        const user = await userModel.findById(decodedToken?._id)
+
+        if (!user){
+            throw new ApiError(401, "Invalid refreshToken")
+        }
+
+        // we can match that the token we got from cookies and user from id in cookies are same or not. 
+
+        if (incomingRefreshToken !== user?.refreshToken){
+            throw new ApiError(401, "Refresh Token is expired")
+        }
+
+        const options = {
+            httpOnly: true,
+            secure: true
+        }
+
+        const  newAccessToken = await generateAccessToken()
+        const newRefreshToken = await generateRefreshToken()
+
+        return res
+                .status(200)
+                .cookie("accessToken", newAccessToken)
+                .cookie("refreshToken", newRefreshToken)
+                .json(
+                    new ApiResponse(
+                        200, 
+                        {accessToken, refreshToken: newRefreshToken}
+                    )
+                )
+
+})
+export  {registerUser, loginUser, logoutUser, refreshAccessToken}
