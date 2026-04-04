@@ -38,5 +38,5 @@ const videoSchema = new Schema({
 }, {timestamps: true})
 
 
-videoSchema.plugin(mongooseAggregatePaginate) // add as plugin
+videoSchema.plugin(mongooseAggregatePaginate) // add as plugin -> plugin helps us in pagination, like how many videos we want to show on each page etc.
 export const videoModel = model("Video", videoSchema)

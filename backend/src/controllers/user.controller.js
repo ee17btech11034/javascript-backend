@@ -171,8 +171,8 @@ const logoutUser = asyncHandler(async(req, res)=>{
     await userModel.findByIdAndUpdate(
         req.user._id,
         {
-            $set: {
-                refreshToken: undefined
+            $unset: { // either unset with 1 or if want to use earlier then set "null" instead of undefined. But unset is better.
+                refreshToken: 1 // this removes the field from document, earlier was facing the issue
             }
         },
         {
