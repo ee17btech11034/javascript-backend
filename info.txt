@@ -267,3 +267,8 @@
 
 
     -- if we are not using res in function then we can say              `func(req, _, next)`
+
+
+
+    -- Adding "Subscription"
+        -- Users can subscribe a channel

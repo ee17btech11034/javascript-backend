@@ -238,4 +238,87 @@ const refreshAccessToken = asyncHandler(async(req, res)=>{
                 )
 
 })
-export  {registerUser, loginUser, logoutUser, refreshAccessToken}
+
+const changeCurrentPassword = asyncHandler(async(req, res)=>{
+    const {oldPassword, newPassword} = req.body // user is trying to change this password
+
+    // req.user // is refrering to current logged in user.
+
+    const user = await userModel.findById(req.user?._id)
+
+    const isPassCorrect = await user.isPasswordCorrect(oldPassword)
+
+    if (! isPassCorrect){
+        throw new ApiError(400, "Invalid password")
+    }
+
+    user.password = newPassword
+    await user.save({validateBeforeSave: false}) // now we are saving means pre will run 
+
+    return res
+            .status(200)
+            .json(new ApiResponse(200, {}, "Password is changes."))
+
+})
+
+
+const getCurrentUser = asyncHandler(async(req, res)=>{
+    return res 
+            .status(200)
+            .json(200, req.user, "Current user is fetched")
+})
+
+const updateUserDetails = asyncHandler(async (req, res)=>{
+    const {gullname, email} = req.body 
+    // files upate ke liye create a differen controller or method
+
+    if (!fullname || !email){
+        throw new ApiError(400, "All fields are required")
+    }
+
+    // req.user?.id  to get the id
+    const user = await userModel.findByIdAndUpdate( // takes 3 args, 1. query, 2 updated content, 3. If new:true means returnt he updated user
+        req.user?._id,
+        {
+            $set: { // set accepts new values
+                fullname,
+                email: email
+            }
+        },
+        {new: true,}
+    ).select("-password")
+
+    return res
+            .status(200)
+            .json(new ApiResponse(200, user, "Account details updated"))
+})
+
+const updateUserAvatar = asyncHandler(async(req, res)=>{
+    const avatarLocalPath = req.file?.path // assuming we gor the files from user using multer
+
+    if (!avatarLocalPath){
+        throw new ApiError(400, "Avatar is missing")
+    }
+
+    const updatedAvatarLink = await uploadOnCloudinary(avatarLocalPath)
+
+    if (!updatedAvatarLink.url){
+        throw new ApiError(400, "Avatar saved url is missing")
+    }
+
+    const user = await userModel.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set: {
+                avatar: updatedAvatarLink.url
+            }
+        },
+        {new: true}
+    ).select("-password")
+
+    return res
+            .status(200)
+            .json(new ApiResponse(200, user, "Avatar is updated"))
+}) // we can write same method for cover image as well
+
+export  {registerUser, loginUser, logoutUser, refreshAccessToken, changeCurrentPassword, getCurrentUser, updateUserDetails, updateUserAvatar}
