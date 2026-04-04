@@ -272,3 +272,25 @@
 
     -- Adding "Subscription"
         -- Users can subscribe a channel
+
+        -- We have added subscription model, there are 2 things in it, subscriber and channel. 
+        -- Both Channel and User are Users. 
+        -- But a user will subscribe and channel will be subscribed. 
+
+        -- Now think that we put an array of user's subscribers and an array of channels that are subscribed by him.
+            -- If we want to delete any entry then it will be costly operation. Linke restructure if 1st entry in array is deleted. 
+
+        -- We create a seperate model for it with "subs" and "channel"
+            -- it will create a new document (like row in MySQL) for every new subscribe. 
+            -- user1, channel3  ==> user1 subscribed channel3. 
+            -- user1, channel5  ==> user1 subscribed channel5. 
+            -- user2, channel5  ==> user2 subscribed channel5. like this 
+
+            -- this way we just need to find and delete an single entry.
+            -- we can run a query to find the subscribers and channles a user subscribed.
+
+    -- mongoDB Aggregation Pipeline:
+            -- https://www.mongodb.com/docs/manual/core/aggregation-pipeline/ 
+            -- Isme ham stages par kaam krte hai. 
+            -- Output of first stage can be input for next. 
+            -- in these stages we can perform many operations like left_join to join multiple collections/tables

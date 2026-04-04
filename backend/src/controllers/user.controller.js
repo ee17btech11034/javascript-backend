@@ -305,6 +305,7 @@ const updateUserAvatar = asyncHandler(async(req, res)=>{
     if (!updatedAvatarLink.url){
         throw new ApiError(400, "Avatar saved url is missing")
     }
+    // delete the older avatar image. Write this code or utility
 
     const user = await userModel.findByIdAndUpdate(
         req.user?._id,
@@ -321,4 +322,81 @@ const updateUserAvatar = asyncHandler(async(req, res)=>{
             .json(new ApiResponse(200, user, "Avatar is updated"))
 }) // we can write same method for cover image as well
 
-export  {registerUser, loginUser, logoutUser, refreshAccessToken, changeCurrentPassword, getCurrentUser, updateUserDetails, updateUserAvatar}
+
+const getUserChannelProfile = asyncHandler(async (req, res)=>{
+    // we will need datat from url. 
+    const {username} = req.params
+
+    if (!username?.trim()){
+        throw new ApiError(400, "Username is  missing")
+    }
+
+    // const user = await userModel.find({username}) // then we can access different collections but 
+
+    // lets use aggregation pipeline
+
+    const channel = await userModel.aggregate([
+        { //stage 1 -> stages return array as output
+            $match: { // found user with username
+                username: username?.toLowerCase()
+            }
+        },
+        { // stage 2 -> No of subscribers of this user
+            $lookup: {
+                from: "Subscriptions", // model name that is saves in Db (plural)
+                localField: "_id", // check the id  
+                foreighField: "channel", // in channel
+                as: "subscribers" // return the output
+            }
+        },
+        { // stage 3: no of channels I have subscribed
+            $lookup: {
+                from: "Subscriptions", // model name that is saves in Db (plural)
+                localField: "_id", // check the id  
+                foreighField: "subscriber", // in 
+                as: "subscribedTo" // return the output
+            }
+        },
+        { // stage 4: Add stage2 and 3 -> so we can send whole data in one
+            $addFields: {
+                subscibersCount: {
+                    $size: "$subscibers" // user $ as it is field (output of stage 2)
+                },
+                channelsSubscribedToCount: {
+                    $size: "$subscribedTo"
+                },
+                isSubscribed: { // did he subscribed this channel
+                    $cond: {
+                        if: {$in: [req.user?._id, "$subscribers.subscriber"]},
+                        then: true, // if yes then set this field true 
+                        else: false // else set this false
+                    }
+                }
+            }
+        }, 
+        { // we will not provide all info to user, we will just provide selected values
+            $project: {
+                fullname: 1, // 1 is a flag that means we want to pass this 
+                username: 1,
+                subscibersCount: 1,
+                channelsSubscribedToCount: 1, 
+                isSubscribed: 1,
+                avatar: 1,
+                coverImage: 1,
+                email: 1
+            }
+        }
+    ])
+
+    if (!channel?.length){
+        throw new ApiError(400, "channel does not exist, Issue in aggrgation pipeline")
+    }
+
+    return res
+            .status(200)
+            .json(new ApiResponse(200, channel[0], "User channel fetched"))
+
+})
+
+
+export  {registerUser, loginUser, logoutUser, refreshAccessToken, changeCurrentPassword, getCurrentUser, updateUserDetails, updateUserAvatar, getUserChannelProfile}
