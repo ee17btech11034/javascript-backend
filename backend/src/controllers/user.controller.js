@@ -398,5 +398,54 @@ const getUserChannelProfile = asyncHandler(async (req, res)=>{
 
 })
 
+const getWatchHistory = asyncHandler(async (req, res)=>{
+    const user = await userModel.aggregate([
+        {
+            $match: {
+                // _id: req.user._id // not this because this return a string but mongoose store this id in objectid form. When we use Mongoose methods then it converts this in objectId automatically. 
+                _id: new mongoose.types.ObjectId(req.user._id) // but in pipelines this code goes as it is. So we will have to create.
+            }
+        },
+        {
+            $lookup: {
+                from: "videos",
+                localField: "watchHistory",
+                foreignField: "_id",
+                as: "shortWatchHistory",
+                pipeline:[
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "owner",
+                            foreighField: "_id",
+                            as: "owner",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        fullname: 1,
+                                        username: 1,
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    { // this step is to reduce the return effect of indexing and all.
+                        $addFields: {
+                            owner: {
+                                $first: "$owner"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ])
 
-export  {registerUser, loginUser, logoutUser, refreshAccessToken, changeCurrentPassword, getCurrentUser, updateUserDetails, updateUserAvatar, getUserChannelProfile}
+    return res
+            .status(200)
+            .json(
+                new ApiResponse(200, user[0].shortWatchHistory, "watch history fetched")
+            )
+})
+
+export  {registerUser, loginUser, logoutUser, refreshAccessToken, changeCurrentPassword, getCurrentUser, updateUserDetails, updateUserAvatar, getUserChannelProfile, getWatchHistory}

@@ -294,3 +294,14 @@
             -- Isme ham stages par kaam krte hai. 
             -- Output of first stage can be input for next. 
             -- in these stages we can perform many operations like left_join to join multiple collections/tables
+    
+    -- Sub pipelines (Aggregation) and routes
+        -- We want watch history for user. 
+            -- Here we will do lookup for watchhistory and then go to all video id inside this. 
+            -- when we go to video id collection then we do not have userid. 
+            -- we need to add this usrerid filed. 
+            -- Here we will have to do nested lookup. (watchhistory then username in videos collection.)
+
+            -- My Q?? why did not we get userId from user when we went for watchhistory???
+
+            --
